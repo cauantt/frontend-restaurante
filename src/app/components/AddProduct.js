@@ -3,46 +3,87 @@ import Modal from './Modal';
 import Cookies from 'js-cookie';
 import { api } from '../services/api';
 
-function AddProduct({ categories }) {
+function AddProduct({ categories, fetchProducts }) {
   const userId = Cookies.get("userId");
 
   const [showModal, setShowModal] = useState(false);
-  const [category, setCategory] = useState('');  // this will store categoryId now
+  const [category, setCategory] = useState(''); // Armazena categoryId
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
-  const [successMessage, setSuccessMessage] = useState(''); // State for success message
-  const [errorMessage, setErrorMessage] = useState(''); // State for error message
+  const [image, setImage] = useState(null); // Armazena objeto do arquivo
+  const [product, setProduct] = useState(null); // Armazena ID do produto
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+
+  
+
+  const fetchProductImage = async (file, productId) => {
+    try {
+
+      console.log('produto',productId);
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('productId', productId);
+
+      const response = await api.post('/upload/product', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      console.log('URL da Imagem:', response.data.fileUrl);
+    } catch (error) {
+      console.error('Erro ao enviar imagem:', error.message);
+      setErrorMessage('Erro ao enviar imagem');
+    }
+  };
 
   const newProduct = async (e) => {
     e.preventDefault();
 
     try {
-      console.log("Categoria selecionada:", category); // Verificar valor da categoria
-      console.log("Nome do produto:", name); // Verificar nome
-      console.log("Preço:", price); // Verificar preço
-      console.log("User ID:", userId); // Verificar userId
-
       const response = await api.post("/products", {
-        name: name,
-        price: price,
-        categoryId: category, // sending categoryId instead of category name
-        userId: userId,
+        name,
+        price,
+        categoryId: category, // Enviando categoryId
+        userId,
       });
 
-      setSuccessMessage('Produto criado com sucesso!'); // Set success message
-      setErrorMessage(''); // Clear any previous error message
+      const data = response.data;
+      const createdProductId = data.productId; // Define o ID do produto criado
+
+      // Atualiza o ID do produto
+      setProduct(createdProductId); 
+
+      setSuccessMessage('Produto criado com sucesso!');
+      setErrorMessage('');
+   
+      // Envia a imagem após criar o produto
+      if (image) {
+        await fetchProductImage(image, createdProductId);
+      }
+
+      fetchProducts(); 
+      
+      // Limpar os estados
+      setName('');
+      setPrice('');
+      setCategory('');
+      setImage(null);
+      setProduct(null);
     } catch (error) {
       console.error(error);
-      setErrorMessage('Ocorreu um erro ao criar o produto.'); // Set error message
-      setSuccessMessage(''); // Clear any previous success message
+      setErrorMessage('Ocorreu um erro ao criar o produto.');
+      setSuccessMessage('');
     }
   };
 
   const handleOpen = () => setShowModal(true);
   const handleClose = () => {
     setShowModal(false);
-    setSuccessMessage(''); // Clear success message when modal is closed
-    setErrorMessage(''); // Clear error message when modal is closed
+    setSuccessMessage(''); // Limpa a mensagem de sucesso quando o modal é fechado
+    setErrorMessage(''); // Limpa a mensagem de erro quando o modal é fechado
   };
 
   return (
@@ -62,19 +103,18 @@ function AddProduct({ categories }) {
 
           <select
             name="Categorias"
-            onChange={(e) => setCategory(e.target.value)} // updates categoryId
+            onChange={(e) => setCategory(e.target.value)} // Atualiza categoryId
             id="Categorias"
-              // use the categoryId as value
           >
             <option value="">Selecione uma categoria</option>
             {categories.length > 0 ? (
               categories.map((category) => (
                 <option key={category.id} value={category.id} className='bg-white text-black'>
-                  {category.category} 
+                  {category.category}
                 </option>
               ))
             ) : (
-              <p className='text-black text-lg mt-10'>No categories found</p>
+              <p className='text-black text-lg mt-10'>Nenhuma categoria encontrada</p>
             )}
           </select>
 
@@ -85,6 +125,13 @@ function AddProduct({ categories }) {
             className='border border-black'
             value={price}
           />
+
+          <input
+            onChange={(e) => setImage(e.target.files[0])} // Armazena o arquivo selecionado
+            type="file"
+            className='border border-black'
+          />
+          
           <button className="bg-black text-white h-10 w-20" type='submit'>Salvar</button>
         </form>
 

@@ -28,9 +28,16 @@ function Page() {
     fetchCategories();
   }, []);
 
+
+
   useEffect(() => {
     // Buscar produtos assim que o componente for montado
-    const fetchProducts = async () => {
+    
+
+    fetchProducts();
+  }, [userId]);
+
+  const fetchProducts = async () => {
       if (userId) {
         try {
           const userIdNumber = parseInt(userId, 10);
@@ -67,9 +74,6 @@ function Page() {
       }
     };
 
-    fetchProducts();
-  }, [userId]);
-
   console.log("Grouped Products:", groupedProducts); // Verificar os produtos agrupados
 
   
@@ -80,9 +84,9 @@ function Page() {
       <div className='flex justify-between'>
         <h1 className='text-black text-3xl font-bold font-light'>Produtos</h1>
         <div className='flex gap-5'>
-          <AddProduct categories={categories} />
+        <AddProduct categories={categories} fetchProducts={fetchProducts} />
           <AddCategory />
-          <button className='h-10 w-10 bg-black'></button>
+          
         </div>
       </div>
   
@@ -93,7 +97,7 @@ function Page() {
             <div className='mt-5 flex flex-wrap gap-5'>
               {groupedProducts[category.id]?.products.length > 0 ? (
                 groupedProducts[category.id].products.map(product => (
-                  <div key={product.productId} className='bg-gray-100 w-full sm:w-64 flex flex-col justify-between border-gray-300 border p-3 rounded-md'>
+                  <div key={product.productId} className='bg-gray-100 w-full sm:w-52 flex flex-col justify-between border-gray-300 border p-3 rounded-md'>
                     <div className='flex flex-col '>
                       <img src={product.path} alt={product.name} className="w-full h-40 object-cover" />
                       <p className='text-black text-lg mt-2'>{product.name}</p>
