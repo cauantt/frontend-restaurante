@@ -89,55 +89,77 @@ function AddProduct({ categories, fetchProducts }) {
   return (
     <div className='cursor-pointer flex w-36 h-10 bg-purple-700 rounded-md justify-between px-3 items-center text-center' onClick={handleOpen}>
       <Modal show={showModal} handleClose={handleClose}>
-        <form onSubmit={newProduct} className='flex flex-col items-start gap-5 text-black'>
-          <h1 className='text-black'>Criar produto</h1>
-          <div>
-            <p>Nome do produto</p>
-            <input
-              onChange={(e) => setName(e.target.value)}
-              placeholder=""
-              className='border border-black'
-              value={name}
-            />
-          </div>
+  <form
+    onSubmit={newProduct}
+    className='flex flex-col items-start gap-5 bg-white p-6 rounded-lg shadow-md max-w-md mx-auto'
+  >
+    <h1 className='text-xl font-semibold text-gray-800'>Criar Produto</h1>
+    
+    <div className='w-full'>
+      <label className='block text-sm font-medium text-gray-700'>Nome do produto</label>
+      <input
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Digite o nome"
+        className='mt-1 w-full border border-gray-300 rounded-md px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:border-blue-500'
+        value={name}
+      />
+    </div>
 
-          <select
-            name="Categorias"
-            onChange={(e) => setCategory(e.target.value)} // Atualiza categoryId
-            id="Categorias"
-          >
-            <option value="">Selecione uma categoria</option>
-            {categories.length > 0 ? (
-              categories.map((category) => (
-                <option key={category.id} value={category.id} className='bg-white text-black'>
-                  {category.category}
-                </option>
-              ))
-            ) : (
-              <p className='text-black text-lg mt-10'>Nenhuma categoria encontrada</p>
-            )}
-          </select>
+    <div className='w-full'>
+      <label className='block text-sm font-medium text-gray-700'>Categoria</label>
+      <select
+        name="Categorias"
+        onChange={(e) => setCategory(e.target.value)}
+        id="Categorias"
+        className='mt-1 w-full border border-gray-300 rounded-md px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:border-blue-500'
+      >
+        <option value="">Selecione uma categoria</option>
+        {categories.length > 0 ? (
+          categories.map((category) => (
+            <option key={category.id} value={category.id} className='bg-white text-black'>
+              {category.category}
+            </option>
+          ))
+        ) : (
+          <option>Nenhuma categoria encontrada</option>
+        )}
+      </select>
+    </div>
 
-          <input
-            onChange={(e) => setPrice(e.target.value)}
-            type="number"
-            placeholder='preço'
-            className='border border-black'
-            value={price}
-          />
+    <div className='w-full'>
+      <label className='block text-sm font-medium text-gray-700'>Preço</label>
+      <input
+        onChange={(e) => setPrice(e.target.value)}
+        type="number"
+        placeholder='Digite o preço'
+        className='mt-1 w-full border border-gray-300 rounded-md px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:border-blue-500'
+        value={price}
+      />
+    </div>
 
-          <input
-            onChange={(e) => setImage(e.target.files[0])} // Armazena o arquivo selecionado
-            type="file"
-            className='border border-black'
-          />
-          
-          <button className="bg-black text-white h-10 w-20" type='submit'>Salvar</button>
-        </form>
+    <div className='w-full'>
+      <label className='block text-sm font-medium text-gray-700'>Imagem do Produto</label>
+      <input
+        onChange={(e) => setImage(e.target.files[0])}
+        type="file"
+        className='mt-1 w-full text-gray-800'
+      />
+    </div>
 
-        {successMessage && <p className='text-green-500 mt-2'>{successMessage}</p>}
-        {errorMessage && <p className='text-red-500 mt-2'>{errorMessage}</p>}
-      </Modal>
+    <div className='flex justify-end w-full mt-5'>
+      <button
+        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm transition duration-200"
+        type='submit'
+      >
+        Salvar
+      </button>
+    </div>
+
+    {successMessage && <p className='text-green-500 mt-2'>{successMessage}</p>}
+    {errorMessage && <p className='text-red-500 mt-2'>{errorMessage}</p>}
+  </form>
+</Modal>
+
 
       <p className='text-xl'>+</p>
       <p className='text-xs'>Adicionar Produto</p>
