@@ -21,7 +21,7 @@ function AddProduct({ categories, fetchProducts }) {
   const fetchProductImage = async (file, productId) => {
     try {
 
-      console.log('produto',productId);
+      
       const formData = new FormData();
       formData.append('file', file);
       formData.append('productId', productId);
@@ -32,7 +32,7 @@ function AddProduct({ categories, fetchProducts }) {
         },
       });
 
-      console.log('URL da Imagem:', response.data.fileUrl);
+     
     } catch (error) {
       console.error('Erro ao enviar imagem:', error.message);
       setErrorMessage('Erro ao enviar imagem');
@@ -72,6 +72,7 @@ function AddProduct({ categories, fetchProducts }) {
       setCategory('');
       setImage(null);
       setProduct(null);
+      handleClose();
     } catch (error) {
       console.error(error);
       setErrorMessage('Ocorreu um erro ao criar o produto.');
@@ -87,7 +88,7 @@ function AddProduct({ categories, fetchProducts }) {
   };
 
   return (
-    <div className='cursor-pointer flex w-36 h-10 bg-purple-700 rounded-md justify-between px-3 items-center text-center' onClick={handleOpen}>
+    <div className='cursor-pointer flex w-40 h-10 bg-purple-700 rounded-md justify-between px-3 items-center text-center' onClick={handleOpen}>
       <Modal show={showModal} handleClose={handleClose}>
   <form
     onSubmit={newProduct}
