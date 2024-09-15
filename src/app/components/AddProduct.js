@@ -10,6 +10,7 @@ function AddProduct({ categories, fetchProducts }) {
   const [category, setCategory] = useState(''); // Armazena categoryId
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
+  const [storage, setStorage] = useState('');
   const [image, setImage] = useState(null); // Armazena objeto do arquivo
   const [product, setProduct] = useState(null); // Armazena ID do produto
   const [successMessage, setSuccessMessage] = useState('');
@@ -46,7 +47,8 @@ function AddProduct({ categories, fetchProducts }) {
       const response = await api.post("/products", {
         name,
         price,
-        categoryId: category, // Enviando categoryId
+        categoryId: category,
+        storage: storage ,
         userId,
       });
 
@@ -132,9 +134,21 @@ function AddProduct({ categories, fetchProducts }) {
       <input
         onChange={(e) => setPrice(e.target.value)}
         type="number"
+        step="any"
         placeholder='Digite o preço'
         className='mt-1 w-full border border-gray-300 rounded-md px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:border-blue-500'
         value={price}
+      />
+    </div>
+
+    <div className='w-full'>
+      <label className='block text-sm font-medium text-gray-700'>Estoque do produto</label>
+      <input
+        onChange={(e) => setStorage(e.target.value)}
+        type="number"
+        placeholder='Digite o estoque'
+        className='mt-1 w-full border border-gray-300 rounded-md px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:border-blue-500'
+        value={storage}
       />
     </div>
 

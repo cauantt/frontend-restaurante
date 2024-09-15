@@ -36,11 +36,14 @@ export default function Home() {
 
 // Ensure the token is stored as a string
       Cookies.set("access_token", String(data.access_token), { expires: 15/24, secure: true, path: '/' });
-
       Cookies.set("userId", data.userId, { expires: 15/24, secure: true });
-      Cookies.set("profile", data.path, {expires : 15/24, secure : true});
+      Cookies.set("profile", String(data.path), { expires: 15/24, secure: true, path: '/' });
       Cookies.set("email",data.email);
       Cookies.set("role", data.role);
+      Cookies.set("enterprise", data.enterprise);
+     
+      
+     
 
 
    

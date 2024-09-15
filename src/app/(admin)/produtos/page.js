@@ -26,6 +26,7 @@ function Page() {
   const userId = Cookies.get("userId");
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const [productName, setProductName] = useState("");
+  const [productStorage, setProductStorage] = useState("");
   const [categoryName, setCategoryName] = useState("");
   const userIds = parseInt(Cookies.get("userId"));
  
@@ -103,7 +104,9 @@ function Page() {
     try {
       const response = await api.patch(`/products/${selectedProductId}`, {
         name: productName,
-        price: productPrice
+        price: productPrice,
+        storage: productStorage
+
       });
       console.log('Update response:', response);
       fetchProducts();
@@ -132,16 +135,16 @@ function Page() {
   const fetchProductById = async () => {
     try {
       const response = await api.get(`/products/${selectedProductId}`);
-
       const data = response.data;
-
+  
       setProductName(data.name);
       setProductPrice(data.price);
-      setProductCategory(data.category);
+      setProductStorage(data.storage); // Make sure this is set correctly
     } catch (error) {
       console.log(error);
     }
   };
+  
 
   const fetchCategoryById = async () => {
     try {
@@ -220,7 +223,7 @@ function Page() {
   };
 
   return (
-    <div className="bg-gray-100 min-h-full w-full px-6 py-5">
+    <div className=" min-h-full w-full ">
       <Modal show={showModal} handleClose={handleClose}>
         <div className="flex flex-col p-5 gap-4">
           <p className="text-black font-bold text-lg">Excluir produto?</p>
@@ -255,7 +258,7 @@ function Page() {
           type="text"
           value={productName}
           onChange={(e) => setProductName(e.target.value)}
-          className="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:border-blue-500"
+          className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:border-blue-500"
         />
       </div>
 
@@ -266,14 +269,25 @@ function Page() {
           type="number"
           value={productPrice}
           onChange={(e) => setProductPrice(e.target.value)}
-          className="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:border-blue-500"
+          className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:border-blue-500"
+        />
+      </div>
+
+      <div className="w-full">
+        <label htmlFor="productStorage" className="text-sm font-medium text-gray-700">Estoque</label>
+        <input
+          id="productStorage"
+          type="number"
+          value={productStorage}
+          onChange={(e) => setProductStorage(e.target.value)}
+          className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:border-blue-500"
         />
       </div>
     </div>
 
     <div className="flex justify-end mt-5">
       <button type="submit"
-        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm transition duration-200"
+        className="bg-purple-700 hover:bg-purple-800 text-white font-semibold py-2 px-4 rounded-lg shadow-sm transition duration-200"
         
       >
         Salvar
@@ -286,7 +300,7 @@ function Page() {
 
 <ModalEdit show={ShowModalEditCategory} handleClose={handleCloseModalEditCategory}>
   <form onSubmit={updateCategory} className="flex flex-col bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
-    <h1 className="text-xl font-semibold text-gray-800 mb-4">Editar Produto</h1>
+    <h1 className="text-xl font-semibold text-gray-800 mb-4">Editar </h1>
 
     <div className="flex flex-col gap-4">
       <div className="w-full">
@@ -298,7 +312,7 @@ function Page() {
           type="text"
           value={categoryName}
           onChange={(e) => setCategoryName(e.target.value)}
-          className="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:border-blue-500"
+          className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:border-blue-500"
         />
       </div>
 
@@ -307,7 +321,7 @@ function Page() {
 
     <div className="flex justify-end mt-5">
       <button type="submit"
-        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm transition duration-200"
+        className="bg-purple-700 hover:bg-purple-800 text-white font-semibold py-2 px-4 rounded-lg shadow-sm transition duration-200"
         
       >
         Salvar
@@ -350,7 +364,7 @@ function Page() {
           categories.map((category) => (
             <div
               key={category.id}
-              className="bg-white relative border-gray-300 border w-full h-auto rounded-md mt-5 p-5 flex flex-col"
+              className="bg-white relative border-gray-300 border w-full h-auto rounded-lg mt-5 p-5 flex flex-col"
             >
               <div
                 className="bg-white w-10 h-10 rounded-full absolute top-5 right-2 transform translate-x-2 translate-y-[-50%] flex justify-center items-center text-black  text-lg cursor-pointer"
@@ -386,7 +400,9 @@ function Page() {
                   groupedProducts[category.id].products.map((product) => (
                     <div
                       key={product.productId}
-                      className="bg-gray-50 w-full sm:w-52 flex flex-col border-gray-300 border p-3 rounded-md relative"
+                      className="bg-gray-50 w-full sm:w-52 flex flex-col border-gray-300 border p-3 rounded-lg
+                      
+                      relative"
                     >
                       <div
                         className="bg-white w-10 h-10 rounded-full absolute top-5 right-2 transform translate-x-2 translate-y-[-50%] flex justify-center items-center text-black  text-lg cursor-pointer"
@@ -429,6 +445,9 @@ function Page() {
                           {product.name}
                         </p>
                         <p className="text-black text-md">R$ {product.price}</p>
+                        <div className="w-full flex justify-end items-end">
+                          <p className="text-black text-md">{product.storage}</p>
+                        </div>
                       </div>
                     </div>
                   ))
