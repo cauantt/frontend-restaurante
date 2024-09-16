@@ -1,7 +1,5 @@
 "use client";
 
-import { ImExit } from "react-icons/im";
-
 import React, { useState, useEffect } from "react";
 import MenuComponent from "./MenuComponent";
 import { MdFastfood } from "react-icons/md";
@@ -9,13 +7,14 @@ import { TbDeviceDesktopAnalytics } from "react-icons/tb";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { IoIosArrowDown } from "react-icons/io";
-import Modal from "./Modal";
 import ModalOptionsLeft from "./ModalOptionsLeft";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useResetCookies } from "./ResetCookiesContext";
 
 
-function Sidebar({profile,email}) {
+function Sidebar() {
+  const {email, profile} = useResetCookies();
   const [role, setRole] = useState("");
  
   const [showModalOptions, setShowModalOptions] = useState(false);
