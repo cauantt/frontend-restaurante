@@ -98,7 +98,7 @@ function Sidebar() {
         </div>
       </div>
 
-      {role === "3" ||
+      {role === "3"  ||
         (role === "2" && (
           <div className="flex flex-col px-5 mt-1 gap-4">
             <p className="text-black text-sm">Gestão</p>
@@ -111,7 +111,7 @@ function Sidebar() {
           </div>
         ))}
 
-      {role === "1" && (
+      {role === "1" || role === "2" &&  (
         <div className="flex flex-col px-5 mt-5 gap-4">
           <p className="text-black text-sm">Cliente</p>
           <Link href="lojas">
