@@ -59,7 +59,7 @@ function page() {
         </div>
 
         <div className="flex ml-12 gap-10 flex-row">
-          <InsButton className="cursor-pointer" text="Editar foto" reset={resetCookies} />
+          <InsButton className="cursor-pointer" text="Editar foto" reset={resetCookies}  />
           <RemoveButton text="Remover " reset={resetCookies} />
         </div>
       </div>

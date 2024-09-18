@@ -10,11 +10,13 @@ import { IoIosArrowDown } from "react-icons/io";
 import ModalOptionsLeft from "./ModalOptionsLeft";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useResetCookies } from "./ResetCookiesContext";
+import { useResetCookies, } from "./ResetCookiesContext";
+import { IoMdPerson } from "react-icons/io";
+import { MdExitToApp } from "react-icons/md";
 
 
 function Sidebar() {
-  const {email, profile} = useResetCookies();
+  const {email, profile,enterprise} = useResetCookies();
   const [role, setRole] = useState("");
  
   const [showModalOptions, setShowModalOptions] = useState(false);
@@ -69,16 +71,21 @@ function Sidebar() {
       >
         <div  className="flex flex-col  text-black text-sm gap-1">
           <Link href="/profile" onClick={handleCloseOptions}>
-            <p>Minha conta</p>
+            <div className="flex items-center gap-2">
+            <IoMdPerson />
+              <p>Minha conta</p>
+            </div>
           </Link>
-          <div onClick={resetCookuies} className="cursor-pointer">
+          <div onClick={resetCookuies} className="cursor-pointer flex items-center gap-2">
+          <MdExitToApp />
             <p>Sair</p>
+            
           </div>
         </div>
       </ModalOptionsLeft>
 
       <div className="flex  p-4   text-black text-lg items-center justify-center  ">
-        <div className=" p-1 px-3  hover:border border-purple-700   flex  gap-5 rounded-md items-center">
+        <div className=" p-1 px-3 w-full hover:border border-purple-700   flex  gap-5 rounded-md justify-around items-center">
           <div className="flex items-center justify-between gap-5">
           <div class="w-10 h-10  relative overflow-hidden border-gray-300 rounded-full flex items-center justify-center font-semibold text-base">
             <Image
@@ -89,7 +96,7 @@ function Sidebar() {
             className=""
           />
             </div>
-            <div className="text-xs">{email}</div>
+            <div className="text-xs">{enterprise}</div>
           </div>
 
           <div onClick={handleOpenOptions}>
@@ -98,11 +105,11 @@ function Sidebar() {
         </div>
       </div>
 
-      {role === "3"  ||
+      {role === "3" ||
         (role === "2" && (
           <div className="flex flex-col px-5 mt-1 gap-4">
             <p className="text-black text-sm">Gestão</p>
-            <Link href="pedidos">
+            <Link href="/pedidos">
               <MenuComponent
                 Icon={TbDeviceDesktopAnalytics}
                 option="Gerenciar pedidos"
@@ -111,10 +118,10 @@ function Sidebar() {
           </div>
         ))}
 
-      {role === "1" || role === "2" &&  (
+      {role === "1" || role ==="2" && (
         <div className="flex flex-col px-5 mt-5 gap-4">
           <p className="text-black text-sm">Cliente</p>
-          <Link href="lojas">
+          <Link href="/lojas">
             <MenuComponent
               Icon={TbDeviceDesktopAnalytics}
               option="Explorar lojas"
@@ -122,8 +129,8 @@ function Sidebar() {
           </Link>
         </div>
       )}
-      {role === "3" ||
-        (role === "2" && (
+      {role === "2" ||
+        (role === "2" || role ==="3" && (
           <div className="flex flex-col px-5 mt-5 gap-4">
             <p className="text-black text-sm">Catálogo</p>
             <Link href="/produtos">

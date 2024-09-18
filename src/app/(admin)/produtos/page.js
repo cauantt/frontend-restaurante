@@ -10,6 +10,8 @@ import { MdEdit } from "react-icons/md";
 import ModalOptions from "@/app/components/ModalOptions";
 import { SlOptions } from "react-icons/sl";
 import ModalEdit from "@/app/components/ModalEdit";
+import { MdDelete } from "react-icons/md";
+
 
 function Page() {
   const [showModal, setShowModal] = useState(false);
@@ -29,6 +31,7 @@ function Page() {
   const [productStorage, setProductStorage] = useState("");
   const [categoryName, setCategoryName] = useState("");
   const userIds = parseInt(Cookies.get("userId"));
+  
  
   const [productPrice, setProductPrice] = useState("");
 
@@ -379,14 +382,17 @@ function Page() {
                 position={modalPosition}
               >
                 <div className="flex flex-col  text-black text-sm gap-1">
-                  <div onClick={() => handleOpen2()} className="cursor-pointer">
+                  <div onClick={() => handleOpen2()} className="cursor-pointer flex items-center gap-2">
+
+                  <MdDelete />
                     <p>Excluir</p>
                   </div>
 
                   <div
                             onClick={() => handleOpenModalEditCategory()}
-                            className="cursor-pointer"
+                            className="cursor-pointer flex items-center gap-2" 
                           >
+                            <MdEdit />
                             <p>Editar</p>
                           </div>
                 </div>
@@ -421,15 +427,17 @@ function Page() {
                         <div className="flex flex-col  text-black text-sm gap-1">
                           <div
                             onClick={() => handleOpen()}
-                            className="cursor-pointer"
+                            className="cursor-pointer flex items-center gap-2"
                           >
+                            <MdDelete />
                             <p>Excluir</p>
                           </div>
 
                           <div
                             onClick={() => handleOpenModalEdit()}
-                            className="cursor-pointer"
+                            className="cursor-pointer flex gap-2 items-center"
                           >
+                            <MdEdit />
                             <p>Editar</p>
                           </div>
                         </div>

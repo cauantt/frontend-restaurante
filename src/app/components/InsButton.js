@@ -1,13 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { api } from '../services/api';
+import Cookies from 'js-cookie';
+import { useResetCookies } from './ResetCookiesContext';
 
 
-function InsButton({ text,reset,resetPage }) {
+
+
+function InsButton({ text,reset}) {
+
+
+  const { userid } = useResetCookies();
+
 
   const handleImageChange = async (event) => {
+   
     const file = event.target.files[0];
     console.log(file);
 
@@ -16,12 +25,14 @@ function InsButton({ text,reset,resetPage }) {
       formData.append('file', file);
 
       try {
-        
-        const response = await api.post('upload/profile', formData, {
+       
+        console.log(userid);
+        const response = await api.post(`upload/profile/${userid}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
+        
 
         // Handle response (update state, notify user, etc.)
         console.log('File uploaded successfully:');
